@@ -1,0 +1,33 @@
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "tyk-gateway",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "tyk-gateway"
+    }
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "80",
+        "protocol": "TCP",
+        "port": 80,
+        "targetPort": 8080
+      },
+      {
+        "name": "8080",
+        "protocol": "TCP",
+        "port": 8080,
+        "targetPort": 8080
+      }
+    ],
+    "selector": {
+      "service": "tyk-gateway"
+    }
+  },
+  "status": {
+    "loadBalancer": {}
+  }
+}

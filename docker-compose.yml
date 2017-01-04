@@ -1,0 +1,91 @@
+version: '2'
+services:
+  redis-1:
+    image: redis:latest
+    command: /usr/local/bin/redis-server /etc/redis/6379.conf --protected-mode no
+    volumes:
+      - ./tyk-redis/redis.conf:/etc/redis/6379.conf
+
+  redis-2:
+    image: redis:latest
+    command: /usr/local/bin/redis-server /etc/redis/6379.conf --protected-mode no
+    volumes:
+      - ./tyk-redis/redis.conf:/etc/redis/6379.conf
+
+  redis-3:
+    image: redis:latest
+    command: /usr/local/bin/redis-server /etc/redis/6379.conf --protected-mode no
+    volumes:
+      - ./tyk-redis/redis.conf:/etc/redis/6379.conf
+
+  redis-4:
+    image: redis:latest
+    command: /usr/local/bin/redis-server /etc/redis/6379.conf --protected-mode no
+    volumes:
+      - ./tyk-redis/redis.conf:/etc/redis/6379.conf
+
+  redis-5:
+    image: redis:latest
+    command: /usr/local/bin/redis-server /etc/redis/6379.conf --protected-mode no
+    volumes:
+      - ./tyk-redis/redis.conf:/etc/redis/6379.conf
+
+  redis-6:
+    image: redis:latest
+    command: /usr/local/bin/redis-server /etc/redis/6379.conf --protected-mode no
+    volumes:
+      - ./tyk-redis/redis.conf:/etc/redis/6379.conf
+
+  redis-trib:
+    build: ./redis-trib
+    command: >
+      /usr/local/bin/create_redis_cluster redis-1 redis-2 redis-3 redis-4 redis-5 redis-6
+    depends_on:
+      - redis-1
+      - redis-2
+      - redis-3
+      - redis-4
+      - redis-5
+      - redis-6
+
+  tyk-mongo:
+    image: mongo:latest
+    command: ["mongod", "--smallfiles"]
+    ports:
+      - "27017:27017"
+
+  tyk-dashboard:
+    image: tykio/tyk-dashboard:v1.3
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./configs/tyk-dashboard/tyk_analytics.conf:/opt/tyk-dashboard/tyk_analytics.conf
+    security_opt:
+       - seccomp:unconfined
+    depends_on:
+      - tyk-mongo
+      - redis-trib
+
+  tyk-pump:
+    image: tykio/tyk-pump-docker-pub:latest
+    volumes:
+      - ./configs/tyk-pump/pump.conf:/opt/tyk-pump/pump.conf
+    security_opt:
+        - seccomp:unconfined
+    depends_on:
+      - tyk-mongo
+      - redis-trib
+
+  tyk-gateway:
+    image: tykio/tyk-gateway:v2.3.0.31
+    ports:
+      - "80:8080"
+      - "8080:8080"
+    volumes:
+      - ./configs/tyk-gateway/tyk.conf:/opt/tyk-gateway/tyk.conf
+    security_opt:
+      - seccomp:unconfined
+    depends_on:
+      - redis-trib
+      - tyk-mongo
+      - tyk-dashboard

@@ -1,0 +1,55 @@
+{
+  "kind": "Deployment",
+  "apiVersion": "extensions/v1beta1",
+  "metadata": {
+    "name": "tyk-gateway",
+    "creationTimestamp": null
+  },
+  "spec": {
+    "replicas": 1,
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "tyk-gateway"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "tyk-gateway-claim0",
+            "persistentVolumeClaim": {
+              "claimName": "tyk-gateway-claim0"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "tyk-gateway",
+            "image": "tykio/tyk-gateway:v2.3.0.31",
+            "ports": [
+              {
+                "containerPort": 8080,
+                "protocol": "TCP"
+              },
+              {
+                "containerPort": 8080,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {},
+            "volumeMounts": [
+              {
+                "name": "tyk-gateway-claim0",
+                "mountPath": "/opt/tyk-gateway/tyk.conf"
+              }
+            ]
+          }
+        ],
+        "restartPolicy": "Always"
+      }
+    },
+    "strategy": {}
+  },
+  "status": {}
+}

@@ -1,0 +1,51 @@
+{
+  "kind": "Deployment",
+  "apiVersion": "extensions/v1beta1",
+  "metadata": {
+    "name": "redis-4",
+    "creationTimestamp": null
+  },
+  "spec": {
+    "replicas": 1,
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "redis-4"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "redis-4-claim0",
+            "persistentVolumeClaim": {
+              "claimName": "redis-4-claim0"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "redis-4",
+            "image": "redis:latest",
+            "args": [
+              "/usr/local/bin/redis-server",
+              "/etc/redis/6379.conf",
+              "--protected-mode",
+              "no"
+            ],
+            "resources": {},
+            "volumeMounts": [
+              {
+                "name": "redis-4-claim0",
+                "mountPath": "/etc/redis/6379.conf"
+              }
+            ]
+          }
+        ],
+        "restartPolicy": "Always"
+      }
+    },
+    "strategy": {}
+  },
+  "status": {}
+}

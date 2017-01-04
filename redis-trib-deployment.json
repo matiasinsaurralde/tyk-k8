@@ -1,0 +1,39 @@
+{
+  "kind": "Deployment",
+  "apiVersion": "extensions/v1beta1",
+  "metadata": {
+    "name": "redis-trib",
+    "creationTimestamp": null
+  },
+  "spec": {
+    "replicas": 1,
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "redis-trib"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "redis-trib",
+            "args": [
+              "/usr/local/bin/create_redis_cluster",
+              "redis-1",
+              "redis-2",
+              "redis-3",
+              "redis-4",
+              "redis-5",
+              "redis-6"
+            ],
+            "resources": {}
+          }
+        ],
+        "restartPolicy": "Always"
+      }
+    },
+    "strategy": {}
+  },
+  "status": {}
+}

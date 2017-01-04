@@ -1,0 +1,27 @@
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "tyk-mongo",
+    "creationTimestamp": null,
+    "labels": {
+      "service": "tyk-mongo"
+    }
+  },
+  "spec": {
+    "ports": [
+      {
+        "name": "27017",
+        "protocol": "TCP",
+        "port": 27017,
+        "targetPort": 27017
+      }
+    ],
+    "selector": {
+      "service": "tyk-mongo"
+    }
+  },
+  "status": {
+    "loadBalancer": {}
+  }
+}

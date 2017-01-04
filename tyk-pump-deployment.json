@@ -1,0 +1,45 @@
+{
+  "kind": "Deployment",
+  "apiVersion": "extensions/v1beta1",
+  "metadata": {
+    "name": "tyk-pump",
+    "creationTimestamp": null
+  },
+  "spec": {
+    "replicas": 1,
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "tyk-pump"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "tyk-pump-claim0",
+            "persistentVolumeClaim": {
+              "claimName": "tyk-pump-claim0"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "tyk-pump",
+            "image": "tykio/tyk-pump-docker-pub:latest",
+            "resources": {},
+            "volumeMounts": [
+              {
+                "name": "tyk-pump-claim0",
+                "mountPath": "/opt/tyk-pump/pump.conf"
+              }
+            ]
+          }
+        ],
+        "restartPolicy": "Always"
+      }
+    },
+    "strategy": {}
+  },
+  "status": {}
+}

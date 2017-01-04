@@ -1,0 +1,51 @@
+{
+  "kind": "Deployment",
+  "apiVersion": "extensions/v1beta1",
+  "metadata": {
+    "name": "tyk-dashboard",
+    "creationTimestamp": null
+  },
+  "spec": {
+    "replicas": 1,
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "service": "tyk-dashboard"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "tyk-dashboard-claim0",
+            "persistentVolumeClaim": {
+              "claimName": "tyk-dashboard-claim0"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "tyk-dashboard",
+            "image": "tykio/tyk-dashboard:v1.3",
+            "ports": [
+              {
+                "containerPort": 3000,
+                "protocol": "TCP"
+              }
+            ],
+            "resources": {},
+            "volumeMounts": [
+              {
+                "name": "tyk-dashboard-claim0",
+                "mountPath": "/opt/tyk-dashboard/tyk_analytics.conf"
+              }
+            ]
+          }
+        ],
+        "restartPolicy": "Always"
+      }
+    },
+    "strategy": {}
+  },
+  "status": {}
+}
